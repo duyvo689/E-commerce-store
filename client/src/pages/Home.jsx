@@ -1,8 +1,10 @@
 import React from 'react'
-import Navbar from '../component/Navbar'
-import Slider from '../component/Slider'
-import Categories from '../component/categories'
-import Products from '../component/Products'
+import Navbar from '../components/Navbar'
+import Slider from '../components/Slider'
+import Categories from '../components/categories'
+import Products from '../components/Products'
+import Newsletter from '../components/Newsletter'
+import Footer from '../components/Footer'
 const Home = () => {
     return (
         <div>
@@ -10,6 +12,8 @@ const Home = () => {
             <Slider />
             <Categories />
             <Products />
+            <Newsletter />
+            <Footer />
         </div>
     )
 }
