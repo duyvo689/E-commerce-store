@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/order");
 
 dotenv.config()
 
@@ -16,8 +18,11 @@ mongoose
     });
 
 app.use(express.json());
-app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/auths", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/carts", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.listen(process.env.PORT || 5000, () => {
     console.log("backend server")
