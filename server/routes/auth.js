@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 
 //register
-router.post("/regiter", async (req, res) => {
+router.post("/register", async (req, res) => {
     const newUser = new User({
         userName: req.body.userName,
         email: req.body.email,
@@ -28,26 +28,34 @@ router.post("/login", async (req, res) => {
 
     try {
         const user = await User.findOne({
-            userName: req.body.UserName
+            userName: req.body.userName
         })
 
         !user && res.status(401).json("Wrong User Name");
 
         const hashedPassword = CryptoJS.AES.decrypt(
-            user.password,
+            user.passWord,
             process.env.PASS_SEC);
 
         const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
-        originalPassword !== req.body.passWord && res.status(401).json(user)
+        originalPassword !== req.body.passWord &&
+            res.status(401).json("Wrong credentials!");
 
-        const accessToken = jwt.sign({
-            id: user._id,
-            isAdimin: user.isAdmin
-        }, process.env.JWT_SEC, { expiresIn: "3d" })
 
-        const { passWord, ...others } = user._doc;
-        res.status(200).json(...others, accessToken)
+        const accessToken = jwt.sign(
+            {
+                id: user._id,
+                isAdmin: user.isAdmin,
+            },
+            process.env.JWT_SEC,
+            { expiresIn: "3d" }
+        );
+
+        const { password, ...others } = user._doc;
+
+        res.status(200).json({ ...others, accessToken });
+
     }
     catch (err) {
         res.status(500).json(err)
